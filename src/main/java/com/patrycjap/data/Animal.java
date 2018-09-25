@@ -1,4 +1,4 @@
-package com.patrycjap;
+package com.patrycjap.data;
 
 public class Animal {
 
