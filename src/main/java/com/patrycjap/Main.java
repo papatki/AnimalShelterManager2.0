@@ -1,11 +1,9 @@
 package com.patrycjap;
 
 import com.patrycjap.data.Animal;
+import com.patrycjap.data.Database;
 import com.patrycjap.service.ButtonsEvents;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,6 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        Database.loadDataFromFile();
         window = primaryStage;
         window.setTitle("Animal Shelter Manager 2.0");
 
@@ -57,7 +56,7 @@ public class Main extends Application {
         );
 
         TableColumn<Animal, String> descriptionColumn = new TableColumn<>("Description");
-        descriptionColumn.setMinWidth(150);
+        descriptionColumn.setMinWidth(500);
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setOnEditCommit(
@@ -87,8 +86,7 @@ public class Main extends Application {
 //        statusButton.setOnAction(e -> ButtonsEvents.statusButtonClicked());
 
         reportButton = new Button("Report");
-//        reportButton.setOnAction(e -> ButtonsEvents.reportButtonClicked());
-
+        reportButton.setOnAction(e -> ButtonsEvents.reportButtonClicked(table));
 
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
@@ -102,10 +100,10 @@ public class Main extends Application {
 
 
         table = new TableView<>();
-        table.setItems(getAnimal());
         table.getColumns().addAll(nameColumn, typeColumn, descriptionColumn);
-        table.setEditable(true);
 
+        Database.saveDataToFile("file.txt");
+        table.setEditable(true);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(table, hBox, hBox2);
@@ -115,17 +113,5 @@ public class Main extends Application {
         window.show();
 
     }
-
-
-    private ObservableList<Animal> getAnimal() {
-        ObservableList<Animal> animals = FXCollections.observableArrayList();
-        animals.add(new Animal("Rex", "dog", "puppy"));
-        animals.add(new Animal("Lion", "cat", "old"));
-        animals.add(new Animal("Sam", "dog", "very old"));
-
-        return animals;
-
-    }
-
 
 }
