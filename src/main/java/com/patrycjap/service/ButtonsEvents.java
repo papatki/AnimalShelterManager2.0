@@ -8,7 +8,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Scanner;
 
 
 public class ButtonsEvents {
@@ -32,8 +36,20 @@ public class ButtonsEvents {
         animalsSelected.forEach(allAnimals::remove);
     }
 
-    public static void statusButtonClicked() {
+    public static int statusButtonClicked(String file) {
+        try {
+            Scanner scanner = new Scanner(new File(file));
+            int count = 0;
+            while (scanner.hasNextLine()) {
+               count++;
+               scanner.nextLine();
+            }
+            return count;
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     // get a report about shelter in xml file -> export TableView to Excel (Apache POI)

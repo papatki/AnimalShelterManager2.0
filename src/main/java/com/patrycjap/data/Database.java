@@ -1,43 +1,56 @@
 package com.patrycjap.data;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
+;
 
 public class Database {
 
-    public static ObservableList<Animal> loadDataFromFile() {
+    public static void loadDataFromFile(TableView<Animal> table) {
         try {
             File file = new File("file.txt");
-            FileInputStream fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            List<Animal> list = (List<Animal>) objectInputStream.readObject();
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String line;
+            String[] array;
 
-            return FXCollections.observableArrayList(list);
+            while ((line = bufferedReader.readLine()) != null) {
+                array = line.split(" ");
+                Animal animal = new Animal();
+                animal.setName(array[0]);
+                animal.setType(array[1]);
+                animal.setDescription(array[2]);
+                table.getItems().add(animal);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return FXCollections.emptyObservableList();
     }
 
-    public static void saveDataToFile(String saveData) {
-        ObservableList<Animal> list = FXCollections.observableArrayList();
+    public static void saveDataToFile(String saveData, TableView<Animal> table) {
         try {
             File file = new File(saveData);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            PrintWriter printWriter = new PrintWriter(file);
+            String[] array = new String[table.getItems().size()];
 
-            objectOutputStream.writeObject(new ArrayList<>(list));
-            objectOutputStream.flush();
-            objectOutputStream.close();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            for (int i = 0; i < table.getItems().size(); i++) {
+                for (int j = 0; j < table.getColumns().size(); j++) {
+                    if (table.getColumns().get(j).getCellData(i) != null) {
+                        array[i] = table.getColumns().get(j).getCellData(i).toString();
+                    } else {
+                        array[i] = "";
+                    }
+                }
+            }
+
+            for (int i = 0; i < array.length; i++) {
+                printWriter.println(array[i]);
+            }
+
+            printWriter.close();
+
+        } catch (FileNotFoundException e) {
+           e.printStackTrace();
         }
 
     }

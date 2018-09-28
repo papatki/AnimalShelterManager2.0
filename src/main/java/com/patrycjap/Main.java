@@ -3,6 +3,7 @@ package com.patrycjap;
 import com.patrycjap.data.Animal;
 import com.patrycjap.data.Database;
 import com.patrycjap.service.ButtonsEvents;
+import com.patrycjap.service.ConfirmBox;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -22,7 +23,7 @@ public class Main extends Application {
     private Stage window;
     private TableView<Animal> table;
     private TextField nameInput, typeInput, descInput;
-    private Button addButton, deleteButton, statusButton, reportButton;
+    private Button addButton, deleteButton, statusButton, reportButton, saveButton;
 
 
     public static void main(String[] args) {
@@ -32,7 +33,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Database.loadDataFromFile();
+
         window = primaryStage;
         window.setTitle("Animal Shelter Manager 2.0");
 
@@ -83,10 +84,20 @@ public class Main extends Application {
         deleteButton.setOnAction(e -> ButtonsEvents.deleteButtonClicked(table));
 
         statusButton = new Button("Status");
-//        statusButton.setOnAction(e -> ButtonsEvents.statusButtonClicked());
+        statusButton.setOnAction(e -> {
+            int num = ButtonsEvents.statusButtonClicked("file.txt");
+            ConfirmBox.confirm("There are " + num
+                    + " animals in the shelter.", "Status");
+        });
 
         reportButton = new Button("Report");
-        reportButton.setOnAction(e -> ButtonsEvents.reportButtonClicked(table));
+        reportButton.setOnAction(e -> {
+            ButtonsEvents.reportButtonClicked(table);
+            ConfirmBox.confirm("Xls report created!", "Report");
+        });
+
+        saveButton = new Button("Save");
+        saveButton.setOnAction(e -> Database.saveDataToFile("file.txt", table));
 
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
@@ -96,13 +107,12 @@ public class Main extends Application {
         HBox hBox2 = new HBox();
         hBox2.setPadding(new Insets(10, 10, 10, 10));
         hBox2.setSpacing(10);
-        hBox2.getChildren().addAll(statusButton, reportButton);
+        hBox2.getChildren().addAll(statusButton, reportButton, saveButton);
 
 
         table = new TableView<>();
+        Database.loadDataFromFile(table);
         table.getColumns().addAll(nameColumn, typeColumn, descriptionColumn);
-
-        Database.saveDataToFile("file.txt");
         table.setEditable(true);
 
         VBox vBox = new VBox();
