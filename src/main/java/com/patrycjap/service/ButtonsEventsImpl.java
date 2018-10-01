@@ -1,5 +1,6 @@
 package com.patrycjap.service;
 
+import com.patrycjap.api.ButtonsEvents;
 import com.patrycjap.data.Animal;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -15,8 +16,8 @@ import java.io.FileOutputStream;
 import java.util.Scanner;
 
 
-public class ButtonsEvents {
-    public static void addButtonClicked(TableView<Animal> table, TextField name,
+public class ButtonsEventsImpl implements ButtonsEvents {
+    public void addButtonClicked(TableView<Animal> table, TextField name,
                                         TextField type, TextField desc) {
         Animal animal = new Animal();
         animal.setName(name.getText());
@@ -28,7 +29,7 @@ public class ButtonsEvents {
         desc.clear();
     }
 
-    public static void deleteButtonClicked(TableView<Animal> table) {
+    public void deleteButtonClicked(TableView<Animal> table) {
         ObservableList<Animal> animalsSelected, allAnimals;
         allAnimals = table.getItems();
         animalsSelected = table.getSelectionModel().getSelectedItems();
@@ -36,7 +37,7 @@ public class ButtonsEvents {
         animalsSelected.forEach(allAnimals::remove);
     }
 
-    public static int statusButtonClicked(String file) {
+    public int statusButtonClicked(String file) {
         try {
             Scanner scanner = new Scanner(new File(file));
             int count = 0;
@@ -53,7 +54,7 @@ public class ButtonsEvents {
     }
 
     // get a report about shelter in xml file -> export TableView to Excel (Apache POI)
-    public static void reportButtonClicked(TableView<Animal> table) {
+    public void reportButtonClicked(TableView<Animal> table) {
         Workbook workbook = new HSSFWorkbook();
         Sheet spreadsheet = workbook.createSheet("sample");
 

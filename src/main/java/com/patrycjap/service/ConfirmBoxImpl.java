@@ -1,5 +1,6 @@
 package com.patrycjap.service;
 
+import com.patrycjap.api.ConfirmBox;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,10 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ConfirmBox {
+public class ConfirmBoxImpl implements ConfirmBox {
     static boolean answer;
 
-    public static boolean confirm(String message, String title) {
+    public boolean confirm(String message, String title) {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);

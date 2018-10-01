@@ -2,8 +2,8 @@ package com.patrycjap;
 
 import com.patrycjap.data.Animal;
 import com.patrycjap.data.Database;
-import com.patrycjap.service.ButtonsEvents;
-import com.patrycjap.service.ConfirmBox;
+import com.patrycjap.service.ButtonsEventsImpl;
+import com.patrycjap.service.ConfirmBoxImpl;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -33,6 +33,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        ButtonsEventsImpl buttonsEvents = new ButtonsEventsImpl();
+        ConfirmBoxImpl confirmBox = new ConfirmBoxImpl();
+
 
         window = primaryStage;
         window.setTitle("Animal Shelter Manager 2.0");
@@ -78,22 +82,22 @@ public class Main extends Application {
         descInput.setMinWidth(100);
 
         addButton = new Button("Add");
-        addButton.setOnAction(e -> ButtonsEvents.addButtonClicked(table, nameInput, typeInput, descInput));
+        addButton.setOnAction(e -> buttonsEvents.addButtonClicked(table, nameInput, typeInput, descInput));
 
         deleteButton = new Button("Delete");
-        deleteButton.setOnAction(e -> ButtonsEvents.deleteButtonClicked(table));
+        deleteButton.setOnAction(e -> buttonsEvents.deleteButtonClicked(table));
 
         statusButton = new Button("Status");
         statusButton.setOnAction(e -> {
-            int num = ButtonsEvents.statusButtonClicked("file.txt");
-            ConfirmBox.confirm("There are " + num
+            int num = buttonsEvents.statusButtonClicked("file.txt");
+            confirmBox.confirm("There are " + num
                     + " animals in the shelter.", "Status");
         });
 
         reportButton = new Button("Report");
         reportButton.setOnAction(e -> {
-            ButtonsEvents.reportButtonClicked(table);
-            ConfirmBox.confirm("Xls report created!", "Report");
+            buttonsEvents.reportButtonClicked(table);
+            confirmBox.confirm("Xls report created!", "Report");
         });
 
         saveButton = new Button("Save");
