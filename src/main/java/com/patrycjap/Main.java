@@ -1,7 +1,8 @@
 package com.patrycjap;
 
 import com.patrycjap.data.Animal;
-import com.patrycjap.data.Database;
+import com.patrycjap.data.DataSource;
+
 import com.patrycjap.service.ButtonsEventsImpl;
 import com.patrycjap.service.ConfirmBoxImpl;
 import javafx.application.Application;
@@ -23,19 +24,21 @@ public class Main extends Application {
     private Stage window;
     private TableView<Animal> table;
     private TextField nameInput, typeInput, descInput;
-    private Button addButton, deleteButton, statusButton, reportButton, saveButton;
+    private Button addButton, deleteButton, statusButton, reportButton;
 
 
     public static void main(String[] args) {
+
         launch(args);
     }
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         ButtonsEventsImpl buttonsEvents = new ButtonsEventsImpl();
         ConfirmBoxImpl confirmBox = new ConfirmBoxImpl();
+        DataSource dataSource = new DataSource();
+        dataSource.open();
 
 
         window = primaryStage;
@@ -89,7 +92,7 @@ public class Main extends Application {
 
         statusButton = new Button("Status");
         statusButton.setOnAction(e -> {
-            int num = buttonsEvents.statusButtonClicked("file.txt");
+            int num = buttonsEvents.statusButtonClicked(table);
             confirmBox.confirm("There are " + num
                     + " animals in the shelter.", "Status");
         });
@@ -100,9 +103,6 @@ public class Main extends Application {
             confirmBox.confirm("Xls report created!", "Report");
         });
 
-        saveButton = new Button("Save");
-        saveButton.setOnAction(e -> Database.saveDataToFile("file.txt", table));
-
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(10);
@@ -111,13 +111,14 @@ public class Main extends Application {
         HBox hBox2 = new HBox();
         hBox2.setPadding(new Insets(10, 10, 10, 10));
         hBox2.setSpacing(10);
-        hBox2.getChildren().addAll(statusButton, reportButton, saveButton);
-
+        hBox2.getChildren().addAll(statusButton, reportButton);
 
         table = new TableView<>();
-        Database.loadDataFromFile(table);
+        dataSource.queryAnimal(table);
         table.getColumns().addAll(nameColumn, typeColumn, descriptionColumn);
+
         table.setEditable(true);
+
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(table, hBox, hBox2);

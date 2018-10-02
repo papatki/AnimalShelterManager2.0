@@ -11,7 +11,7 @@ public interface ButtonsEvents {
 
     void deleteButtonClicked(TableView<Animal> table);
 
-    int statusButtonClicked(String file);
+    int statusButtonClicked(TableView<Animal> table);
 
     void reportButtonClicked(TableView<Animal> table);
 

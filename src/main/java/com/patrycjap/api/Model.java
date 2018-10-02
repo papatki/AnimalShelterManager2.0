@@ -2,6 +2,7 @@ package com.patrycjap.api;
 
 import com.patrycjap.data.Animal;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
 
 public interface Model {
 
@@ -9,13 +10,11 @@ public interface Model {
 
     void close();
 
-    ObservableList<Animal> queryAnimal();
+    ObservableList<Animal> queryAnimal(TableView<Animal> table);
 
-    void addNewAnimal();
+    void addNewAnimal(String name, String type, String desc);
 
-    void deleteAnimal();
-
-    void getCountAnimals();
+    void deleteAnimal(String itemToRemove);
 
 
 }

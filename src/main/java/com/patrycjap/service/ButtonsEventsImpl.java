@@ -2,6 +2,7 @@ package com.patrycjap.service;
 
 import com.patrycjap.api.ButtonsEvents;
 import com.patrycjap.data.Animal;
+import com.patrycjap.data.DataSource;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -10,19 +11,21 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Scanner;
 
 
 public class ButtonsEventsImpl implements ButtonsEvents {
+
+    DataSource dataSource = new DataSource();
+
     public void addButtonClicked(TableView<Animal> table, TextField name,
-                                        TextField type, TextField desc) {
+                                 TextField type, TextField desc) {
         Animal animal = new Animal();
         animal.setName(name.getText());
         animal.setType(type.getText());
         animal.setDescription(desc.getText());
+        dataSource.open();
+        dataSource.addNewAnimal(name.getText(), type.getText(), desc.getText());
         table.getItems().add(animal);
         name.clear();
         type.clear();
@@ -30,27 +33,18 @@ public class ButtonsEventsImpl implements ButtonsEvents {
     }
 
     public void deleteButtonClicked(TableView<Animal> table) {
+        dataSource.open();
         ObservableList<Animal> animalsSelected, allAnimals;
+        String itemToRemove;
         allAnimals = table.getItems();
         animalsSelected = table.getSelectionModel().getSelectedItems();
-
+        itemToRemove = table.getSelectionModel().getSelectedItem().getName();
+        dataSource.deleteAnimal(itemToRemove);
         animalsSelected.forEach(allAnimals::remove);
     }
 
-    public int statusButtonClicked(String file) {
-        try {
-            Scanner scanner = new Scanner(new File(file));
-            int count = 0;
-            while (scanner.hasNextLine()) {
-               count++;
-               scanner.nextLine();
-            }
-            return count;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return 0;
+    public int statusButtonClicked(TableView<Animal> table) {
+        return table.getItems().size();
     }
 
     // get a report about shelter in xml file -> export TableView to Excel (Apache POI)

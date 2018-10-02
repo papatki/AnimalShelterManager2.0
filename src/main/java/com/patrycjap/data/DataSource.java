@@ -1,70 +1,97 @@
 package com.patrycjap.data;
 
 import com.patrycjap.api.Model;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DataSource implements Model {
 
-    private static final String DB_NAME = "animals_database.db";
-    private  static final String CONNECTION_STRING = "jdbc:sqlite:/home/patrioshka/IdeaProjects/AnimalShelterManager2.0";
+    public static final String CONNECTION_STRING = "jdbc:sqlite:/home/patrycja/IdeaProjects/AnimalShelterManager2.0/animals_database";
 
-    private static final String TABLE_ANIMALS ="Animals";
-    private static final String COLUMN_NAME = "Name";
-    private static final String COLUMN_TYPE = "Type";
-    private static final String COLUMN_DESCRIPTION = "Description";
+    public static final String TABLE_ANIMALS = "Animals";
+    public static final String COLUMN_NAME = "Name";
+    public static final String COLUMN_TYPE = "Type";
+    public static final String COLUMN_DESCRIPTION = "Description";
 
-    private static final int INDEX_NAME = 1;
-    private static final int INDEX_TYPE = 2;
-    private static final int INDEX_DESCRIPTION = 3;
-
-    private static final int ORDER_BY_NONE = 1;
+    public static final int INDEX_NAME = 1;
+    public static final int INDEX_TYPE = 2;
+    public static final int INDEX_DESCRIPTION = 3;
 
     private Connection connection;
 
 
     @Override
     public boolean open() {
-       try {
-           connection = DriverManager.getConnection(CONNECTION_STRING);
-           return true;
-       }catch (SQLException e) {
-           e.getMessage();
-           return false;
-       }
+        try {
+            connection = DriverManager.getConnection(CONNECTION_STRING);
+            return true;
+        } catch (SQLException e) {
+            e.getMessage();
+            return false;
+        }
     }
 
     @Override
     public void close() {
         try {
-            if(connection != null) {
+            if (connection != null) {
                 connection.close();
             }
-        }catch (SQLException  e) {
+        } catch (SQLException e) {
             e.getMessage();
         }
     }
 
     @Override
-    public ObservableList<Animal> queryAnimal() {
-        return null;
+    public ObservableList<Animal> queryAnimal(TableView<Animal> table) {
+
+
+        ObservableList<Animal> animals = FXCollections.observableArrayList();
+
+        try {
+            String stringSQL = "SELECT * FROM " + TABLE_ANIMALS + " ORDER BY " + COLUMN_NAME;
+            ResultSet resultSet = connection.createStatement().executeQuery(stringSQL);
+
+            while (resultSet.next()) {
+                Animal animal = new Animal();
+                animal.setName(resultSet.getString(INDEX_NAME));
+                animal.setType(resultSet.getString(INDEX_TYPE));
+                animal.setDescription(resultSet.getString(INDEX_DESCRIPTION));
+                animals.add(animal);
+                table.setItems(animals);
+            }
+            return animals;
+        } catch (SQLException e) {
+            e.getMessage();
+            return null;
+        }
     }
 
     @Override
-    public void addNewAnimal() {
+    public void addNewAnimal(String name, String type, String desc) {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("INSERT INTO " + TABLE_ANIMALS +
+                    " (" + COLUMN_NAME + ", " + COLUMN_TYPE + ", " + COLUMN_DESCRIPTION + " ) " +
+                    "VALUES( '" + name + "','" + type + "',' " + desc + "')");
+        } catch (SQLException e) {
+            e.getMessage();
+        }
 
     }
 
     @Override
-    public void deleteAnimal() {
+    public void deleteAnimal(String itemToRemove) {
+        try (Statement statement = connection.createStatement()) {
+            statement.execute("DELETE FROM " + TABLE_ANIMALS + " WHERE " + COLUMN_NAME + " = '" +
+                    itemToRemove + "'");
+
+        } catch (SQLException e) {
+            e.getMessage();
+        }
 
     }
 
-    @Override
-    public void getCountAnimals() {
-
-    }
 }
