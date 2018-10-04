@@ -1,6 +1,7 @@
 package com.patrycjap.service;
 
 import com.patrycjap.api.ConfirmBox;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,10 +31,12 @@ public class ConfirmBoxImpl implements ConfirmBox {
 
 
         VBox vBox = new VBox(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
         vBox.getChildren().addAll(label, yesButton);
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
+        scene.getStylesheets().add(getClass().getResource("/confirmboxstyle.css").toExternalForm());
         window.setScene(scene);
         window.showAndWait();
         return answer;

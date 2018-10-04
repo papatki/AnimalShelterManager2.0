@@ -24,7 +24,7 @@ public class Main extends Application {
     private Stage window;
     private TableView<Animal> table;
     private TextField nameInput, typeInput, descInput;
-    private Button addButton, deleteButton, statusButton, reportButton;
+    private Button addButton, deleteButton, statusButton, reportButton, saveButton;
 
 
     public static void main(String[] args) {
@@ -100,7 +100,7 @@ public class Main extends Application {
         reportButton = new Button("Report");
         reportButton.setOnAction(e -> {
             buttonsEvents.reportButtonClicked(table);
-            confirmBox.confirm("Xls report created!", "Report");
+            confirmBox.confirm("XlS report was created!", "Report");
         });
 
         HBox hBox = new HBox();
@@ -124,6 +124,7 @@ public class Main extends Application {
         vBox.getChildren().addAll(table, hBox, hBox2);
 
         Scene scene = new Scene(vBox);
+        scene.getStylesheets().add(getClass().getResource("/mainstyle.css").toExternalForm());
         window.setScene(scene);
         window.show();
 

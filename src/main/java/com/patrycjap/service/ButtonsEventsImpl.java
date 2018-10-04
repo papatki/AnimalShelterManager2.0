@@ -76,4 +76,10 @@ public class ButtonsEventsImpl implements ButtonsEvents {
         }
 
     }
+
+    @Override
+    public void saveButtonClicked(TableView<Animal> table) {
+        dataSource.open();
+
+    }
 }
