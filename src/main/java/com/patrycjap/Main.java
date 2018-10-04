@@ -103,6 +103,12 @@ public class Main extends Application {
             confirmBox.confirm("XlS report was created!", "Report");
         });
 
+        saveButton = new Button("Save");
+        saveButton.setOnAction(e -> {
+            buttonsEvents.saveButtonClicked(table);
+            confirmBox.confirm("All changes saved.", "Save");
+        });
+
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(10);
@@ -111,7 +117,7 @@ public class Main extends Application {
         HBox hBox2 = new HBox();
         hBox2.setPadding(new Insets(10, 10, 10, 10));
         hBox2.setSpacing(10);
-        hBox2.getChildren().addAll(statusButton, reportButton);
+        hBox2.getChildren().addAll(statusButton, reportButton, saveButton);
 
         table = new TableView<>();
         dataSource.queryAnimal(table);

@@ -16,5 +16,7 @@ public interface Model {
 
     void deleteAnimal(String itemToRemove);
 
+    void updateDatabase(String itemToUpdate, String name, String type, String desc);
+
 
 }

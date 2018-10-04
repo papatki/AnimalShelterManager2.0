@@ -94,4 +94,17 @@ public class DataSource implements Model {
 
     }
 
+    @Override
+    public void updateDatabase(String itemToUpdate, String name, String type, String desc) {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeQuery("UPDATE " + TABLE_ANIMALS + " SET " + COLUMN_NAME + " = '" +
+                    name + "', " + COLUMN_TYPE + " = '" + type + "', " + COLUMN_DESCRIPTION + " = '" + desc +
+                    "' WHERE " + COLUMN_NAME + " = '" + itemToUpdate + "'");
+
+        } catch (SQLException e) {
+            e.getMessage();
+        }
+
+    }
+
 }

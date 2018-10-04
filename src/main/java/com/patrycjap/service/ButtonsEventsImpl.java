@@ -80,6 +80,9 @@ public class ButtonsEventsImpl implements ButtonsEvents {
     @Override
     public void saveButtonClicked(TableView<Animal> table) {
         dataSource.open();
-
+        String name = table.getSelectionModel().getSelectedItem().getName();
+        String type = table.getSelectionModel().getSelectedItem().getType();
+        String desc = table.getSelectionModel().getSelectedItem().getDescription();
+        dataSource.updateDatabase(name, name, type, desc);
     }
 }
