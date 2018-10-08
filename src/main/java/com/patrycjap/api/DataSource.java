@@ -4,7 +4,7 @@ import com.patrycjap.data.Animal;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
-public interface Model {
+public interface DataSource {
 
     boolean open();
 

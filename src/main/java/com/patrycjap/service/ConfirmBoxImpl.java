@@ -36,7 +36,7 @@ public class ConfirmBoxImpl implements ConfirmBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add(getClass().getResource("/confirmboxstyle.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/stylesheets/confirmboxstyle.css").toExternalForm());
         window.setScene(scene);
         window.showAndWait();
         return answer;

@@ -1,8 +1,8 @@
 package com.patrycjap.service;
 
-import com.patrycjap.api.ButtonsEvents;
+import com.patrycjap.api.Actions;
 import com.patrycjap.data.Animal;
-import com.patrycjap.data.DataSource;
+import com.patrycjap.data.DataSourceImpl;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -14,9 +14,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.io.FileOutputStream;
 
 
-public class ButtonsEventsImpl implements ButtonsEvents {
+public class ActionsImpl implements Actions {
 
-    DataSource dataSource = new DataSource();
+    private DataSourceImpl dataSource = new DataSourceImpl();
 
     public void addButtonClicked(TableView<Animal> table, TextField name,
                                  TextField type, TextField desc) {
@@ -78,7 +78,7 @@ public class ButtonsEventsImpl implements ButtonsEvents {
     }
 
     @Override
-    public void saveButtonClicked(TableView<Animal> table) {
+    public void saveChanges(TableView<Animal> table) {
         dataSource.open();
         String name = table.getSelectionModel().getSelectedItem().getName();
         String type = table.getSelectionModel().getSelectedItem().getType();

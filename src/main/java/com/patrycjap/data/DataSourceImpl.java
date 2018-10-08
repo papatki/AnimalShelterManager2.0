@@ -1,15 +1,14 @@
 package com.patrycjap.data;
 
-import com.patrycjap.api.Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 import java.sql.*;
 
-public class DataSource implements Model {
+public class DataSourceImpl implements com.patrycjap.api.DataSource {
 
-    public static final String CONNECTION_STRING = "jdbc:sqlite:/home/patrycja/IdeaProjects/AnimalShelterManager2.0/animals_database";
+    public static final String CONNECTION_STRING = "jdbc:sqlite:/home/patrycja/IdeaProjects/AnimalShelterManager2.0/src/main/resources/data/animals_database";
 
     public static final String TABLE_ANIMALS = "Animals";
     public static final String COLUMN_NAME = "Name";

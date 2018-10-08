@@ -5,7 +5,7 @@ import com.patrycjap.data.Animal;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-public interface ButtonsEvents {
+public interface Actions {
 
     void addButtonClicked(TableView<Animal> table, TextField name,
                           TextField type, TextField desc);
@@ -15,6 +15,7 @@ public interface ButtonsEvents {
     int statusButtonClicked(TableView<Animal> table);
 
     void reportButtonClicked(TableView<Animal> table);
-    void saveButtonClicked(TableView<Animal> table);
+
+    void saveChanges(TableView<Animal> table);
 
 }
